@@ -1,0 +1,16 @@
+name: product_catalog
+description: Offline Product Catalog
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  image_picker: ^1.0.7
+  path_provider: ^2.1.2
+  path: ^1.9.0
+flutter:
+  uses-material-design: true
