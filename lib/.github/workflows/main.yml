@@ -1,0 +1,36 @@
+name: Build APK
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.19.0'
+
+      - name: Auto-Generate Project Folders
+        run: |
+          # 1. Force generate the Android structure
+          flutter create --platforms android .
+          
+          # 2. Add Camera Permissions to the manifest
+          sed -i '/<application/i \    <uses-permission android:name="android.permission.CAMERA" />' android/app/src/main/AndroidManifest.xml
+          
+          # 3. Update the App Name
+          sed -i 's/android:label="product_catalog"/android:label="My Catalog"/' android/app/src/main/AndroidManifest.xml
+
+      - name: Build Debug APK
+        run: |
+          flutter pub get
+          flutter build apk --debug
+
+      - name: Upload Finished APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: My-Product-Catalog-App
+          path: build/app/outputs/flutter-apk/app-debug.apk
